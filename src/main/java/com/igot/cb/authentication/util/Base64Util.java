@@ -17,6 +17,9 @@ package com.igot.cb.authentication.util;
  */
 import java.io.UnsupportedEncodingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Utilities for encoding and decoding the Base64 representation of
  * binary data.  See RFCs <a
@@ -24,6 +27,9 @@ import java.io.UnsupportedEncodingException;
  * href="http://www.ietf.org/rfc/rfc3548.txt">3548</a>.
  */
 public class Base64Util {
+
+    private static final Logger logger = LoggerFactory.getLogger(Base64Util.class);
+
     /**
      * Default values for encoder/decoder flags.
      */
@@ -233,6 +239,9 @@ public class Base64Util {
                     break;
                 case 2:
                     output_len += 3;
+                    break;
+                default:
+                    logger.warn("Base64Util:encode: unexpected value for len % 3");
                     break;
             }
         }
@@ -491,6 +500,10 @@ public class Base64Util {
                             return false;
                         }
                         break;
+
+                    default:
+                        logger.warn("Base64Util:Decoder:process: unexpected state {}", state);
+                        break;
                 }
             }
 
@@ -533,6 +546,10 @@ public class Base64Util {
                 case 5:
                     // Read all the padding '='s we expected and no more.
                     // Fine.
+                    break;
+
+                default:
+                    logger.warn("Base64Util:Decoder:process: unexpected state {} at finish", state);
                     break;
             }
 
@@ -641,6 +658,10 @@ public class Base64Util {
                                 (input[p++] & 0xff);
                         tailLen = 0;
                     }
+                    break;
+
+                default:
+                    logger.warn("Base64Util:Encoder:process: unexpected tailLen {}", tailLen);
                     break;
             }
 

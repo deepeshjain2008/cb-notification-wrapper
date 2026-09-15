@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -102,8 +103,15 @@ public class KeyManagerTest {
              MockedStatic<Paths> pathsMock = Mockito.mockStatic(Paths.class)) {
             PropertiesCache mockPropertiesCache = mock(PropertiesCache.class);
             propertiesCacheMock.when(PropertiesCache::getInstance).thenReturn(mockPropertiesCache);
+            Path mockPath = mock(Path.class);
+            pathsMock.when(() -> Paths.get(anyString())).thenReturn(mockPath);
+            filesMock.when(() -> Files.walk(mockPath)).thenThrow(new IOException("Simulated file system exception"));
+
             KeyManager keyManager = new KeyManager();
             keyManager.init();
+
+            assertNull("No key should be loaded when the file system throws an exception",
+                    keyManager.getPublicKey("test_init_fileSystemException_key"));
         }
     }
 

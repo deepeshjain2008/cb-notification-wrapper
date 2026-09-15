@@ -10,7 +10,7 @@ class ProjectUtilTest {
 
     @Test
     void testCreateServerError() {
-        ResponseCode rc = ResponseCode.internalError;
+        ResponseCode rc = ResponseCode.INTERNAL_ERROR;
         CustomException ex = ProjectUtil.createServerError(rc);
 
         assertNotNull(ex);
@@ -21,7 +21,7 @@ class ProjectUtilTest {
 
     @Test
     void testCreateClientError() {
-        ResponseCode rc = ResponseCode.unAuthorized;
+        ResponseCode rc = ResponseCode.UN_AUTHORIZED;
         CustomException ex = ProjectUtil.createClientException(rc);
 
         assertNotNull(ex);

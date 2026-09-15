@@ -10,11 +10,11 @@ class ResponseCodeTest {
     @Test
     void testEnumValuesAndFields() {
         // test enums with String errorCode & message
-        ResponseCode unauthorized = ResponseCode.unAuthorized;
+        ResponseCode unauthorized = ResponseCode.UN_AUTHORIZED;
         assertEquals("UNAUTHORIZED_USER", unauthorized.getErrorCode());
         assertEquals("You are not authorized.", unauthorized.getErrorMessage());
 
-        ResponseCode internalError = ResponseCode.internalError;
+        ResponseCode internalError = ResponseCode.INTERNAL_ERROR;
         assertEquals("INTERNAL_ERROR", internalError.getErrorCode());
         assertEquals("Process failed,please try again later.", internalError.getErrorMessage());
 
@@ -37,16 +37,16 @@ class ResponseCodeTest {
     @Test
     void testGetResponseWithUnauthorizedConstant() {
         ResponseCode result = ResponseCode.getResponse(Constants.UNAUTHORIZED);
-        assertEquals(ResponseCode.unAuthorized, result);
+        assertEquals(ResponseCode.UN_AUTHORIZED, result);
     }
 
     @Test
     void testGetResponseWithMatchingErrorCode() {
         ResponseCode result = ResponseCode.getResponse("UNAUTHORIZED_USER");
-        assertEquals(ResponseCode.unAuthorized, result);
+        assertEquals(ResponseCode.UN_AUTHORIZED, result);
 
         result = ResponseCode.getResponse("INTERNAL_ERROR");
-        assertEquals(ResponseCode.internalError, result);
+        assertEquals(ResponseCode.INTERNAL_ERROR, result);
     }
 
 

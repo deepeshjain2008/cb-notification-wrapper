@@ -5,15 +5,21 @@ package com.igot.cb.exceptions;
  */
 public interface ResponseMessage {
 
-    interface Message {
+    /*private ResponseMessage() {
+        // prevent instantiation
+    }*/
 
-        String UNAUTHORIZED_USER = "You are not authorized.";
-        String INTERNAL_ERROR = "Process failed,please try again later.";
+    public static final class Message {
+        private Message() {}
+
+        public static final String UNAUTHORIZED_USER = "You are not authorized.";
+        public static final String INTERNAL_ERROR = "Process failed, please try again later.";
     }
 
-    interface Key {
-        String UNAUTHORIZED_USER = "UNAUTHORIZED_USER";
-        String INTERNAL_ERROR = "INTERNAL_ERROR";
+    public static final class Key {
+        private Key() {}
 
+        public static final String UNAUTHORIZED_USER = "UNAUTHORIZED_USER";
+        public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
     }
 }
