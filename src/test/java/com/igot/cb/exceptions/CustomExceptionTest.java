@@ -27,17 +27,14 @@ public class CustomExceptionTest {
     }
 
     @Test
-    public void testSettersAndGetters() {
-        CustomException exception = new CustomException();
+    public void testResponseCodeConstructor() {
         String code = "ERR_002";
         String message = "Another error occurred";
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        exception.setCode(code);
-        exception.setMessage(message);
-        exception.setHttpStatusCode(status);
-        assertEquals("Code should be updated by setter", code, exception.getCode());
-        assertEquals("Message should be updated by setter", message, exception.getMessage());
-        assertEquals("HttpStatusCode should be updated by setter", status, exception.getHttpStatusCode());
+        int responseCode = 500;
+        CustomException exception = new CustomException(code, message, responseCode);
+        assertEquals("Code should match the provided value", code, exception.getCode());
+        assertEquals("Message should match the provided value", message, exception.getMessage());
+        assertEquals("ResponseCode should match the provided value", responseCode, exception.getResponseCode());
     }
 
     @Test

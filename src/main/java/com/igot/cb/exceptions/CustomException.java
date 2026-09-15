@@ -1,9 +1,7 @@
 package com.igot.cb.exceptions;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 
 @Getter
 public class CustomException extends RuntimeException {
