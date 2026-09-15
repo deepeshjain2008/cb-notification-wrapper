@@ -5,10 +5,6 @@ package com.igot.cb.exceptions;
  */
 public interface ResponseMessage {
 
-    /*private ResponseMessage() {
-        // prevent instantiation
-    }*/
-
     public static final class Message {
         private Message() {}
 

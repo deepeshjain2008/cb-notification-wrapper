@@ -1,10 +1,7 @@
 package com.igot.cb.config;
 
-import com.igot.cb.util.CbServerProperties;
-import com.igot.cb.util.PropertiesCache;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
