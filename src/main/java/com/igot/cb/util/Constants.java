@@ -65,6 +65,9 @@ public class Constants {
     public static final String SSO_URL = "sso.url";
     public static final String SSO_REALM = "sso.realm";
     public static final String ACCESS_TOKEN_PUBLICKEY_BASEPATH = "accesstoken.publickey.basepath";
+    public static final String PUBLIC_KEY_HEADER = "-+BEGIN PUBLIC KEY-+";
+    public static final String PUBLIC_KEY_FOOTER = "-+END PUBLIC KEY-+";
+    public static final String NEW_LINE_REGEX = "[\\r\\n]+";
     public static final String NO_DATA_FOUND = "No data found";
     public static final String SUCCESSFULLY_CREATED = "successfully created";
     public static final String SUCCESSFULLY_READING = "successfully read";

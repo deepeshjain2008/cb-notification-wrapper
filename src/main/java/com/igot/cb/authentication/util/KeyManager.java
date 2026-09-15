@@ -44,7 +44,7 @@ public class KeyManager {
         try {
           Path path = Paths.get(file);
           List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-          String content = String.join("", lines);
+          String content = String.join(Constants.EMPTY_STRING, lines);
           KeyData keyData = new KeyData(path.getFileName().toString(), loadPublicKey(content));
           // Store the KeyData object in the keyMap
           keyMap.put(path.getFileName().toString(), keyData);
@@ -71,9 +71,9 @@ public class KeyManager {
    */
   public static PublicKey loadPublicKey(String key) throws Exception {
     // Remove header and footer from the key string
-    String cleanedKey = key.replaceAll("(-+BEGIN PUBLIC KEY-+)", "")
-            .replaceAll("(-+END PUBLIC KEY-+)", "")
-            .replaceAll("[\\r\\n]+", "");
+    String cleanedKey = key.replace(Constants.PUBLIC_KEY_HEADER, Constants.EMPTY_STRING)
+            .replace(Constants.PUBLIC_KEY_FOOTER, Constants.EMPTY_STRING)
+            .replaceAll(Constants.NEW_LINE_REGEX, Constants.EMPTY_STRING);
     // Decode Base64 content
     byte[] keyBytes = Base64.getDecoder().decode(cleanedKey);
     // Generate PublicKey object
