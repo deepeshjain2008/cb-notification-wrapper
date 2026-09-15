@@ -326,11 +326,6 @@ public class Base64UtilTest {
         assertEquals(originalStr, new String(decoded, StandardCharsets.UTF_8));
     }
 
-    // --- Coverage for the defensive `default` branches added to Base64Util's switch statements. ---
-    // These states/tailLen values can never occur through the public encode/decode API, so the
-    // Decoder/Encoder package-private helper classes are driven directly (via reflection for the
-    // private `state` field) to exercise the default branches.
-
     private static void setDecoderState(Base64Util.Decoder decoder, int state) throws Exception {
         Field stateField = Base64Util.Decoder.class.getDeclaredField("state");
         stateField.setAccessible(true);
@@ -369,11 +364,6 @@ public class Base64UtilTest {
         assertTrue("process() should still succeed and just log the unexpected tailLen", result);
     }
 
-    // --- Coverage for the later sonar-driven changes: the broadened `catch (Exception e)` in
-    // encodeToString (needed once String(byte[], Charset) replaced the checked-exception-throwing
-    // String(byte[], String) constructor) and the extracted setStateAndReturnFalse() helper used
-    // by the decoder's finish-state switch. ---
-
     @Test
     public void testEncodeToString_exceptionFromEncode_isWrappedAsAssertionError() {
         try {
@@ -396,19 +386,12 @@ public class Base64UtilTest {
 
     @Test
     public void testDecode_oneExtraTrailingCharacter_hitsSetStateAndReturnFalseCaseOne() {
-        // "QUJDQ" is a full 4-char group ("QUJD") plus one extra data char, leaving the
-        // decoder in state 1 (one stray byte, not enough to form another output byte) when
-        // process() is called with finish=true -- exercising the case 1 branch that now
-        // delegates to the extracted setStateAndReturnFalse(6) helper.
         assertThrows(IllegalArgumentException.class,
                 () -> Base64Util.decode("QUJDQ", Base64Util.DEFAULT));
     }
 
     @Test
     public void testDecode_missingSecondPaddingCharacter_hitsSetStateAndReturnFalseCaseFour() {
-        // "QQ=" has only one '=' where two are required after two data chars, leaving the
-        // decoder in state 4 when process() is called with finish=true -- exercising the
-        // case 4 branch that now delegates to the extracted setStateAndReturnFalse(6) helper.
         assertThrows(IllegalArgumentException.class,
                 () -> Base64Util.decode("QQ=", Base64Util.DEFAULT));
     }

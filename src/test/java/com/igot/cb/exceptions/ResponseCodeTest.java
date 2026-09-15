@@ -16,7 +16,7 @@ class ResponseCodeTest {
 
         ResponseCode internalError = ResponseCode.INTERNAL_ERROR;
         assertEquals("INTERNAL_ERROR", internalError.getErrorCode());
-        assertEquals("Process failed,please try again later.", internalError.getErrorMessage());
+        assertEquals("Process failed, please try again later.", internalError.getErrorMessage());
 
         // test enums with int responseCode
         ResponseCode ok = ResponseCode.OK;

@@ -71,8 +71,8 @@ public class KeyManager {
    */
   public static PublicKey loadPublicKey(String key) throws Exception {
     // Remove header and footer from the key string
-    String cleanedKey = key.replace(Constants.PUBLIC_KEY_HEADER, Constants.EMPTY_STRING)
-            .replace(Constants.PUBLIC_KEY_FOOTER, Constants.EMPTY_STRING)
+    String cleanedKey = key.replaceAll(Constants.PUBLIC_KEY_HEADER, Constants.EMPTY_STRING)
+            .replaceAll(Constants.PUBLIC_KEY_FOOTER, Constants.EMPTY_STRING)
             .replaceAll(Constants.NEW_LINE_REGEX, Constants.EMPTY_STRING);
     // Decode Base64 content
     byte[] keyBytes = Base64.getDecoder().decode(cleanedKey);
