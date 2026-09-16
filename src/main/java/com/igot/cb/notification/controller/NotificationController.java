@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/notifications")
 public class NotificationController {
 
+    private final NotificationService notificationService;
+
     @Autowired
-    NotificationService notificationService;
+    public NotificationController(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createNotifications(@RequestBody NotificationRequest request) {

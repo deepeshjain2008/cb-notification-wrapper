@@ -30,17 +30,13 @@ class NotificationServiceImplTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        service = new NotificationServiceImpl();
-
         accessTokenValidator = mock(AccessTokenValidator.class);
         userService = mock(UserService.class);
         mapper = new ObjectMapper();
         producer = mock(Producer.class);
 
-        setPrivateField("accessTokenValidator", accessTokenValidator);
-        setPrivateField("userService", userService);
-        setPrivateField("mapper", mapper);
-        setPrivateField("producer", producer);
+        service = new NotificationServiceImpl(accessTokenValidator, userService, mapper, producer);
+
         setPrivateField("topicName", "test-topic");
     }
 

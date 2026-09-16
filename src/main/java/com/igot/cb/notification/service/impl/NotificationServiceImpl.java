@@ -30,20 +30,22 @@ import static com.igot.cb.util.Constants.*;
 @Slf4j
 public class NotificationServiceImpl implements NotificationService {
 
-    @Autowired
-    AccessTokenValidator accessTokenValidator;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ObjectMapper mapper;
-
-    @Autowired
-    private Producer producer;
+    private final AccessTokenValidator accessTokenValidator;
+    private final UserService userService;
+    private final ObjectMapper mapper;
+    private final Producer producer;
 
     @Value("${kafka.topic.name}")
     private String topicName;
+
+    @Autowired
+    public NotificationServiceImpl(AccessTokenValidator accessTokenValidator, UserService userService,
+                                    ObjectMapper mapper, Producer producer) {
+        this.accessTokenValidator = accessTokenValidator;
+        this.userService = userService;
+        this.mapper = mapper;
+        this.producer = producer;
+    }
 
 
     @Override

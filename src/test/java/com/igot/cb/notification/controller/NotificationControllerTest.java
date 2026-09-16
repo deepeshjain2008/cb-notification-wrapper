@@ -19,8 +19,7 @@ class NotificationControllerTest {
     @BeforeEach
     void setUp() {
         notificationService = mock(NotificationService.class);
-        controller = new NotificationController();
-        controller.notificationService = notificationService;
+        controller = new NotificationController(notificationService);
     }
 
     @Test

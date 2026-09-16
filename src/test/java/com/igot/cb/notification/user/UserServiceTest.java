@@ -28,11 +28,10 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        userService = new UserService();
         restTemplate = mock(RestTemplate.class);
+        userService = new UserService(restTemplate);
 
         setPrivateField("sbApiKey", "dummy-api-key");
-        setPrivateField("restTemplate", restTemplate);
     }
 
     private void setPrivateField(String fieldName, Object value) throws Exception {

@@ -27,8 +27,12 @@ public class UserService {
     @Value("${sb.api.key}")
     private String sbApiKey;
 
+    private final RestTemplate restTemplate;
+
     @Autowired
-    private RestTemplate restTemplate;
+    public UserService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
 
     public ApiResponse searchUsers(JsonNode payload) {
