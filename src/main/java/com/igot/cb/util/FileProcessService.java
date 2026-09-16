@@ -120,7 +120,10 @@ public class FileProcessService {
     log.info("DesignationServiceImpl::processCsvAndSendMessage");
     List<Map<String, String>> dataRows = new ArrayList<>();
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
+        CSVParser csvParser = new CSVParser(reader, CSVFormat.Builder.create(CSVFormat.DEFAULT)
+            .setHeader()
+            .setSkipHeaderRecord(true)
+            .build())) {
 
       List<String> headers = csvParser.getHeaderNames();
 
