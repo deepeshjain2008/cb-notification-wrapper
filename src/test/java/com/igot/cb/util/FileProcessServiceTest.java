@@ -40,7 +40,7 @@ public class FileProcessServiceTest {
     }
 
     @Test
-    public void testProcessCsvFile_Success() throws IOException {
+    public void testProcessCsvFile_Success() {
         MultipartFile file = createTestCsvFile();
         List<Map<String, String>> result = fileProcessService.processExcelFile(file);
         assertNotNull("Result should not be null", result);

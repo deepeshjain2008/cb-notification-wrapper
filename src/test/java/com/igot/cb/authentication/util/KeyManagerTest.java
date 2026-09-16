@@ -51,7 +51,7 @@ public class KeyManagerTest {
     }
 
     @Test
-    public void test_loadPublicKey_validKeyString() throws Exception {
+    public void test_loadPublicKey_validKeyString() {
         String validPublicKeyString = """
             -----BEGIN PUBLIC KEY-----
             MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqe4M4f7sVew+5U2G6l5H
@@ -81,7 +81,7 @@ public class KeyManagerTest {
 
 
     @Test
-    public void test_loadPublicKey_noNewlines() throws Exception {
+    public void test_loadPublicKey_noNewlines() {
         String noNewlines = VALID_KEY_STRING.replace("\n", "");
         PublicKey key = KeyManager.loadPublicKey(noNewlines);
         assertNotNull(key);
@@ -89,7 +89,7 @@ public class KeyManagerTest {
 
 
     @Test
-    public void test_init_fileSystemException() throws Exception {
+    public void test_init_fileSystemException() {
         try (MockedStatic<PropertiesCache> propertiesCacheMock = Mockito.mockStatic(PropertiesCache.class);
              MockedStatic<Files> filesMock = Mockito.mockStatic(Files.class);
              MockedStatic<Paths> pathsMock = Mockito.mockStatic(Paths.class)) {
@@ -108,7 +108,7 @@ public class KeyManagerTest {
     }
 
     @Test
-    public void test_init_propertyNotFound() throws Exception {
+    public void test_init_propertyNotFound() {
         KeyManager spyKeyManager = spy(new KeyManager());
         try (MockedStatic<PropertiesCache> propertiesCacheMock = Mockito.mockStatic(PropertiesCache.class)) {
             PropertiesCache mockPropertiesCache = mock(PropertiesCache.class);

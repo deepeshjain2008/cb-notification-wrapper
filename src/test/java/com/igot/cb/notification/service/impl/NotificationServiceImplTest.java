@@ -1,7 +1,6 @@
 package com.igot.cb.notification.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.igot.cb.authentication.util.AccessTokenValidator;
 import com.igot.cb.notification.enums.*;
 import com.igot.cb.notification.request.NotificationRequest;
 import com.igot.cb.notification.user.UserService;
@@ -23,19 +22,17 @@ import static org.mockito.Mockito.*;
 class NotificationServiceImplTest {
 
     private NotificationServiceImpl service;
-    private AccessTokenValidator accessTokenValidator;
     private UserService userService;
     private ObjectMapper mapper;
     private Producer producer;
 
     @BeforeEach
     void setUp() throws Exception {
-        accessTokenValidator = mock(AccessTokenValidator.class);
         userService = mock(UserService.class);
         mapper = new ObjectMapper();
         producer = mock(Producer.class);
 
-        service = new NotificationServiceImpl(accessTokenValidator, userService, mapper, producer);
+        service = new NotificationServiceImpl(userService, mapper, producer);
 
         setPrivateField("topicName", "test-topic");
     }

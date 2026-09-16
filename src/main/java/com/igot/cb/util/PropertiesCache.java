@@ -1,6 +1,8 @@
 package com.igot.cb.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +16,7 @@ import java.util.Properties;
  */
 public class PropertiesCache {
     // Logger for logging messages
+    private static final Logger logger = LoggerFactory.getLogger(PropertiesCache.class);
 
     // Array of file names from which properties are loaded
     private final String[] fileName = {
@@ -35,6 +38,7 @@ public class PropertiesCache {
             try {
                 configProp.load(in);
             } catch (IOException e) {
+                logger.error("Failed to load properties file: {}", file, e);
             }
         }
     }

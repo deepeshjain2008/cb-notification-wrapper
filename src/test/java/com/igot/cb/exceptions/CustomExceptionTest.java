@@ -1,8 +1,8 @@
 package com.igot.cb.exceptions;
 
-import com.igot.cb.exceptions.CustomException;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
+
 import static org.junit.Assert.*;
 
 public class CustomExceptionTest {

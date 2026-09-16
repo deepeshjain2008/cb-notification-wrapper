@@ -11,6 +11,9 @@ import java.util.UUID;
  */
 public class ProjectUtil {
 
+    private ProjectUtil() {
+    }
+
     /**
      * This method will create and return server exception to caller.
      *

@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -154,7 +155,7 @@ public class FileProcessService {
     }
   }
 
-  private Date parseDate(String value) throws Exception {
+  private Date parseDate(String value) throws ParseException {
     // Customize this date parsing logic based on the expected date format in your CSV
     SimpleDateFormat dateFormat = new SimpleDateFormat(UTC_DATE_FORMAT);
     return dateFormat.parse(value);
