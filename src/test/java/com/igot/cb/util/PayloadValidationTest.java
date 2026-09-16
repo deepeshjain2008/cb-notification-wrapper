@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.igot.cb.exceptions.CustomException;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
 import com.networknt.schema.ValidationMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class PayloadValidationTest {
         when(schemaFactory.getSchema(any(InputStream.class))).thenReturn(schema);
         when(schema.validate(any(JsonNode.class))).thenReturn(Collections.emptySet());
         try (var mocked = Mockito.mockStatic(JsonSchemaFactory.class)) {
-            mocked.when(JsonSchemaFactory::getInstance).thenReturn(schemaFactory);
+            mocked.when(() -> JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4)).thenReturn(schemaFactory);
             payloadValidation.validatePayload("/valid-schema.json", payload);
         }
     }
@@ -51,7 +52,7 @@ class PayloadValidationTest {
         when(schemaFactory.getSchema(any(InputStream.class))).thenReturn(schema);
         when(schema.validate(any(JsonNode.class))).thenReturn(Collections.emptySet());
         try (var mocked = Mockito.mockStatic(JsonSchemaFactory.class)) {
-            mocked.when(JsonSchemaFactory::getInstance).thenReturn(schemaFactory);
+            mocked.when(() -> JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4)).thenReturn(schemaFactory);
             payloadValidation.validatePayload("/valid-schema.json", payload);
         }
     }
@@ -68,7 +69,7 @@ class PayloadValidationTest {
         when(schemaFactory.getSchema(any(InputStream.class))).thenReturn(schema);
         when(schema.validate(any(JsonNode.class))).thenReturn(errors);
         try (var mocked = Mockito.mockStatic(JsonSchemaFactory.class)) {
-            mocked.when(JsonSchemaFactory::getInstance).thenReturn(schemaFactory);
+            mocked.when(() -> JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4)).thenReturn(schemaFactory);
             CustomException ex = assertThrows(CustomException.class, () ->
                     payloadValidation.validatePayload("/valid-schema.json", payload));
             assertEquals(HttpStatus.BAD_REQUEST, ex.getHttpStatusCode());
@@ -89,7 +90,7 @@ class PayloadValidationTest {
         when(schemaFactory.getSchema(any(InputStream.class))).thenReturn(schema);
         when(schema.validate(any(JsonNode.class))).thenReturn(errors);
         try (var mocked = Mockito.mockStatic(JsonSchemaFactory.class)) {
-            mocked.when(JsonSchemaFactory::getInstance).thenReturn(schemaFactory);
+            mocked.when(() -> JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4)).thenReturn(schemaFactory);
             CustomException ex = assertThrows(CustomException.class, () ->
                     payloadValidation.validatePayload("/valid-schema.json", payload));
             assertEquals(HttpStatus.BAD_REQUEST, ex.getHttpStatusCode());
@@ -104,7 +105,7 @@ class PayloadValidationTest {
         JsonSchemaFactory schemaFactory = mock(JsonSchemaFactory.class);
         when(schemaFactory.getSchema(any(InputStream.class))).thenThrow(new RuntimeException("File not found"));
         try (var mocked = Mockito.mockStatic(JsonSchemaFactory.class)) {
-            mocked.when(JsonSchemaFactory::getInstance).thenReturn(schemaFactory);
+            mocked.when(() -> JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4)).thenReturn(schemaFactory);
             CustomException ex = assertThrows(CustomException.class, () ->
                     payloadValidation.validatePayload("/non-existent-schema.json", payload));
             assertEquals("Failed to validate payload", ex.getCode());
@@ -117,7 +118,7 @@ class PayloadValidationTest {
         JsonSchemaFactory schemaFactory = mock(JsonSchemaFactory.class);
         when(schemaFactory.getSchema(any(InputStream.class))).thenThrow(new RuntimeException("Unexpected error"));
         try (var mocked = Mockito.mockStatic(JsonSchemaFactory.class)) {
-            mocked.when(JsonSchemaFactory::getInstance).thenReturn(schemaFactory);
+            mocked.when(() -> JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4)).thenReturn(schemaFactory);
             assertThrows(CustomException.class, () ->
                     payloadValidation.validatePayload("/valid-schema.json", payload));
         }

@@ -2,11 +2,13 @@ package com.igot.cb.authentication.util;
 
 import com.igot.cb.authentication.model.KeyData;
 
+import com.igot.cb.exceptions.CustomException;
 import com.igot.cb.util.Constants;
 import com.igot.cb.util.PropertiesCache;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 
@@ -15,7 +17,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.HashMap;
@@ -69,8 +73,9 @@ public class KeyManager {
    * @return The loaded public key
    * @throws Exception If there's an error during the loading process
    */
-  public static PublicKey loadPublicKey(String key) throws Exception {
+  public static PublicKey loadPublicKey(String key) {
     // Remove header and footer from the key string
+    try {
     String cleanedKey = key.replaceAll(Constants.PUBLIC_KEY_HEADER, Constants.EMPTY_STRING)
             .replaceAll(Constants.PUBLIC_KEY_FOOTER, Constants.EMPTY_STRING)
             .replaceAll(Constants.NEW_LINE_REGEX, Constants.EMPTY_STRING);
@@ -78,7 +83,12 @@ public class KeyManager {
     byte[] keyBytes = Base64.getDecoder().decode(cleanedKey);
     // Generate PublicKey object
     X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
-    KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-    return keyFactory.generatePublic(spec);
+      KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+          return keyFactory.generatePublic(spec);
+      } catch (IllegalArgumentException | NoSuchAlgorithmException | InvalidKeySpecException e) {
+        throw new CustomException("PUBLIC_KEY_LOAD_ERROR",
+                "Failed to load public key: " + e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+      }
   }
 }

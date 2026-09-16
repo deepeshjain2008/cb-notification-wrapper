@@ -15,7 +15,7 @@ public enum ResponseCode {
     CLIENT_ERROR(400),
     SERVER_ERROR(500);
     @Setter
-    private int responseCode;
+    private int code;
     /**
      * error code contains String value
      */
@@ -34,8 +34,8 @@ public enum ResponseCode {
         this.errorMessage = errorMessage;
     }
 
-    ResponseCode(int responseCode) {
-        this.responseCode = responseCode;
+    ResponseCode(int code) {
+        this.code = code;
     }
 
     /**
@@ -56,10 +56,6 @@ public enum ResponseCode {
             }
             return value;
         }
-    }
-
-    public String getMessage(int errorCode) {
-        return "";
     }
 
 }

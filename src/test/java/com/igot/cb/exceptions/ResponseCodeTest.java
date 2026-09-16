@@ -20,13 +20,13 @@ class ResponseCodeTest {
 
         // test enums with int responseCode
         ResponseCode ok = ResponseCode.OK;
-        assertEquals(200, ok.getResponseCode());
+        assertEquals(200, ok.getCode());
 
         ResponseCode clientError = ResponseCode.CLIENT_ERROR;
-        assertEquals(400, clientError.getResponseCode());
+        assertEquals(400, clientError.getCode());
 
         ResponseCode serverError = ResponseCode.SERVER_ERROR;
-        assertEquals(500, serverError.getResponseCode());
+        assertEquals(500, serverError.getCode());
     }
 
     @Test
@@ -47,13 +47,5 @@ class ResponseCodeTest {
 
         result = ResponseCode.getResponse("INTERNAL_ERROR");
         assertEquals(ResponseCode.INTERNAL_ERROR, result);
-    }
-
-
-    @Test
-    void testGetMessage() {
-        String msg = ResponseCode.OK.getMessage(200);
-        assertNotNull(msg);
-        assertEquals("", msg);
     }
 }

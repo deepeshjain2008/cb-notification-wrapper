@@ -1,5 +1,6 @@
 package com.igot.cb.authentication.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -8,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Random;
 
+@Slf4j
 public class Base64UtilTest {
 
     @Test
@@ -94,6 +96,7 @@ public class Base64UtilTest {
             assertNotNull(result);
             assertEquals(0, result.length);
         } catch (IllegalArgumentException e) {
+            log.error("Caught expected IllegalArgumentException for invalid Base64 input: {}", e.getMessage());
         }
     }
 

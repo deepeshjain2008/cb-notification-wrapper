@@ -1,12 +1,14 @@
 package com.igot.cb.authentication.util;
 
 import com.igot.cb.authentication.model.KeyData;
+import com.igot.cb.exceptions.CustomException;
 import com.igot.cb.util.PropertiesCache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,9 +26,11 @@ public class KeyManagerTest {
     @Test
     public void testLoadPublicKeyWithInvalidKeyString() {
         String invalidKey = "InvalidKeyWithoutHeaderAndFooter";
-        assertThrows(java.security.spec.InvalidKeySpecException.class, () -> {
+        CustomException exception = assertThrows(CustomException.class, () -> {
             KeyManager.loadPublicKey(invalidKey);
         });
+        assertEquals("PUBLIC_KEY_LOAD_ERROR", exception.getCode());
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getHttpStatusCode());
     }
 
     @Test

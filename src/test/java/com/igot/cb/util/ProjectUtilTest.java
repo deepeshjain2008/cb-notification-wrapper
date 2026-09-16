@@ -16,7 +16,7 @@ class ProjectUtilTest {
         assertNotNull(ex);
         assertEquals(rc.getErrorCode(), ex.getCode());
         assertEquals(rc.getErrorMessage(), ex.getMessage());
-        assertEquals(ResponseCode.SERVER_ERROR.getResponseCode(), ex.getResponseCode());
+        assertEquals(ResponseCode.SERVER_ERROR.getCode(), ex.getResponseCode());
     }
 
     @Test
@@ -27,6 +27,6 @@ class ProjectUtilTest {
         assertNotNull(ex);
         assertEquals(rc.getErrorCode(), ex.getCode());
         assertEquals(rc.getErrorMessage(), ex.getMessage());
-        assertEquals(ResponseCode.CLIENT_ERROR.getResponseCode(), ex.getResponseCode());
+        assertEquals(ResponseCode.CLIENT_ERROR.getCode(), ex.getResponseCode());
     }
 }
