@@ -81,6 +81,16 @@ public class FileProcessServiceTest {
     }
 
     @Test
+    public void testProcessExcelFile_MissingRowStopsProcessing() throws IOException {
+        // Row 1 is a genuinely uncreated row (sheet.getRow(1) == null), distinct from an
+        // empty-but-existing row. Processing should stop there and never reach row 2's data.
+        MultipartFile file = createExcelFileWithMissingRow();
+        List<Map<String, String>> result = fileProcessService.processExcelFile(file);
+        assertNotNull("Result should not be null", result);
+        assertTrue("Processing should stop at the missing row and not reach row 2", result.isEmpty());
+    }
+
+    @Test
     public void testProcessExcelFile_WithDates() throws IOException {
         MultipartFile file = createExcelFileWithDates();
         List<Map<String, String>> result = fileProcessService.processExcelFile(file);
@@ -134,6 +144,23 @@ public class FileProcessServiceTest {
                 byteArrayOutputStream.toByteArray());
     }
     
+    private MultipartFile createExcelFileWithMissingRow() throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Test Sheet");
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Header1");
+        // Row 1 is intentionally never created, so sheet.getRow(1) returns null,
+        // even though row 2 (below the gap) does have data.
+        Row dataRow2 = sheet.createRow(2);
+        dataRow2.createCell(0).setCellValue("Value2");
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        workbook.write(byteArrayOutputStream);
+        workbook.close();
+        return new MockMultipartFile("file", "test.xlsx",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                byteArrayOutputStream.toByteArray());
+    }
+
     private MultipartFile createExcelFileWithDates() throws IOException {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Test Sheet");

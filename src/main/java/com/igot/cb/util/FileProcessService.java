@@ -67,36 +67,9 @@ public class FileProcessService {
       Row headerRow = sheet.getRow(0);
       List<Map<String, String>> dataRows = new ArrayList<>();
       for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
-        Row dataRow = sheet.getRow(rowIndex);
-        if (dataRow == null) {
-          break; // No more data rows, exit the loop
-        }
-        boolean allBlank = true;
-        Map<String, String> rowData = new HashMap<>();
-        for (int colIndex = 0; colIndex < headerRow.getLastCellNum(); colIndex++) {
-          Cell headerCell = headerRow.getCell(colIndex);
-          Cell valueCell = dataRow.getCell(colIndex);
-          if (headerCell != null && headerCell.getCellType() != CellType.BLANK) {
-            String excelHeader =
-                formatter.formatCellValue(headerCell).replaceAll("[\\n*]", "").trim();
-            String cellValue = "";
-            if (valueCell != null && valueCell.getCellType() != CellType.BLANK) {
-              if (valueCell.getCellType() == CellType.NUMERIC
-                  && DateUtil.isCellDateFormatted(valueCell)) {
-                // Handle date format
-                Date date = valueCell.getDateCellValue();
-                SimpleDateFormat dateFormat = new SimpleDateFormat(UTC_DATE_FORMAT);
-                cellValue = dateFormat.format(date);
-              } else {
-                cellValue = formatter.formatCellValue(valueCell).replace("\n", ",").trim();
-              }
-              allBlank = false;
-            }
-            rowData.put(excelHeader, cellValue);
-          }
-        }
-        if (allBlank) {
-          break; // If all cells are blank in the current row, stop processing
+        Map<String, String> rowData = processRow(sheet, headerRow, rowIndex, formatter);
+        if (rowData == null) {
+          break;
         }
         dataRows.add(rowData);
       }
@@ -106,6 +79,40 @@ public class FileProcessService {
       log.error(e.getMessage());
       throw new CustomException("EXCEL_SHEET_PROCESSING_ERROR", e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  private Map<String, String> processRow(Sheet sheet, Row headerRow, int rowIndex, DataFormatter formatter) {
+    Row dataRow = sheet.getRow(rowIndex);
+    if (dataRow == null) {
+      return null; // No more data rows
+    }
+
+    boolean allBlank = true;
+    Map<String, String> rowData = new HashMap<>();
+
+    for (int colIndex = 0; colIndex < headerRow.getLastCellNum(); colIndex++) {
+      Cell headerCell = headerRow.getCell(colIndex);
+      Cell valueCell = dataRow.getCell(colIndex);
+
+      if (headerCell != null && headerCell.getCellType() != CellType.BLANK) {
+        String excelHeader = formatter.formatCellValue(headerCell).replaceAll("[\\n*]", "");
+        String cellValue = "";
+
+        if (valueCell != null && valueCell.getCellType() != CellType.BLANK) {
+          if (valueCell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(valueCell)) {
+            Date date = valueCell.getDateCellValue();
+            SimpleDateFormat dateFormat = new SimpleDateFormat(UTC_DATE_FORMAT);
+            cellValue = dateFormat.format(date);
+          } else {
+            cellValue = formatter.formatCellValue(valueCell).replace("\n", "");
+          }
+          allBlank = false;
+        }
+        rowData.put(excelHeader, cellValue);
+      }
+    }
+
+    return allBlank ? null : rowData; // Signal "stop" if row is entirely blank too
   }
 
   private List<Map<String, String>> processCsvAndSendMessage(InputStream inputStream) throws IOException {
