@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,7 +69,7 @@ public class FileProcessService {
       List<Map<String, String>> dataRows = new ArrayList<>();
       for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
         Map<String, String> rowData = processRow(sheet, headerRow, rowIndex, formatter);
-        if (rowData == null) {
+        if (rowData.isEmpty()) {
           break;
         }
         dataRows.add(rowData);
@@ -84,7 +85,7 @@ public class FileProcessService {
   private Map<String, String> processRow(Sheet sheet, Row headerRow, int rowIndex, DataFormatter formatter) {
     Row dataRow = sheet.getRow(rowIndex);
     if (dataRow == null) {
-      return null; // No more data rows
+      return Collections.emptyMap(); // No more data rows
     }
 
     boolean allBlank = true;
@@ -112,7 +113,7 @@ public class FileProcessService {
       }
     }
 
-    return allBlank ? null : rowData; // Signal "stop" if row is entirely blank too
+    return allBlank ? Collections.emptyMap() : rowData; // Signal "stop" if row is entirely blank too
   }
 
   private List<Map<String, String>> processCsvAndSendMessage(InputStream inputStream) throws IOException {
