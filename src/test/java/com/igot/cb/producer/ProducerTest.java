@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 import static org.mockito.Mockito.*;
@@ -16,13 +15,9 @@ class ProducerTest {
     private KafkaTemplate<String, String> kafkaTemplate;
 
     @BeforeEach
-    void setUp() throws Exception {
-        producer = new Producer();
+    void setUp() {
         kafkaTemplate = mock(KafkaTemplate.class);
-
-        Field field = Producer.class.getDeclaredField("kafkaTemplate");
-        field.setAccessible(true);
-        field.set(producer, kafkaTemplate);
+        producer = new Producer(kafkaTemplate);
     }
 
     @Test

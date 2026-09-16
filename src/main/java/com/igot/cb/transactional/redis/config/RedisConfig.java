@@ -28,8 +28,12 @@ public class RedisConfig {
   @Value("${spring.redis.port}")
   private int redisPort;
 
+  private final CbServerProperties cbServerProperties;
+
   @Autowired
-  private CbServerProperties cbServerProperties;
+  public RedisConfig(CbServerProperties cbServerProperties) {
+    this.cbServerProperties = cbServerProperties;
+  }
 
   @Bean
   public RedisConnectionFactory redisConnectionFactory() {

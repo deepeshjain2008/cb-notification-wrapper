@@ -13,13 +13,17 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class CacheService {
 
-  @Autowired
-  private RedisTemplate<String, String> redisTemplate;
-  @Autowired
-  private ObjectMapper objectMapper;
+  private final RedisTemplate<String, String> redisTemplate;
+  private final ObjectMapper objectMapper;
 
   @Value("${spring.redis.cacheTtl}")
   private long cacheTtl;
+
+  @Autowired
+  public CacheService(RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
+    this.redisTemplate = redisTemplate;
+    this.objectMapper = objectMapper;
+  }
 
 
   public void putCache(String key, Object object) {

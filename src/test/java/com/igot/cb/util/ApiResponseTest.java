@@ -556,8 +556,8 @@ class ApiResponseTest {
         apiResponse2.setParams(param);
         apiResponse1.put("k1", "v1");
         apiResponse2.put("k2", "v2");
-        assertEquals(apiResponse1, apiResponse2,
-                "ApiResponse treats different result maps as equal if other fields match");
+        assertNotEquals(apiResponse1, apiResponse2,
+                "ApiResponse with different result maps should not be equal even if other fields match");
     }
 
 
